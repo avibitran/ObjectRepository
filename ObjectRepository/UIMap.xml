@@ -1,0 +1,294 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Browser name="Browser" driver="FirefoxDriver"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Page name="Login" url="/CxWebClient/Login.aspx">
+    <WebObject xsi:type="Simple" webElementType="FormElement" name="frmMain" description="the main from" externalize="true">
+      <Identification>
+        <IdentificationMethod>XPath</IdentificationMethod>
+        <Value><![CDATA[./form]]></Value>
+      </Identification>
+      <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageHeader" externalize="false">
+        <Identification>
+          <IdentificationMethod>TagName</IdentificationMethod>
+          <Value>header</Value>
+        </Identification>
+      </WebObject>
+      <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageContent" externalize="false">
+        <Identification>
+          <IdentificationMethod>XPath</IdentificationMethod>
+          <Value><![CDATA[./header/following-sibling::div[1]]]></Value>
+        </Identification>
+        <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="tblSignIn" externalize="false">
+          <Identification>
+            <IdentificationMethod>XPath</IdentificationMethod>
+            <Value><![CDATA[.//table[@id='wrapper']]]></Value>
+          </Identification>
+          <WebObject xsi:type="Simple" webElementType="LabelElement" name="lblSignIn">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[./tbody/tr[1]/td/span]]></Value>
+            </Identification>
+          </WebObject>
+          <WebObject xsi:type="Simple" webElementType="TextBoxElement" name="txtUsername">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[./tbody//input[@id='txtUserName']]]></Value>
+            </Identification>
+          </WebObject>
+          <WebObject xsi:type="Simple" webElementType="TextBoxElement" name="txtPassword">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[./tbody//input[@id='txtPassword']]]></Value>
+            </Identification>
+          </WebObject>
+          <WebObject xsi:type="Simple" webElementType="ButtonElement" name="login">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[.//span[@id='btnLogin']]]></Value>
+            </Identification>
+          </WebObject>
+          <WebObject xsi:type="Simple" webElementType="ButtonElement" name="options">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[.//span[@id='btnOptions']]]></Value>
+            </Identification>
+          </WebObject>
+          <WebObject xsi:type="Simple" webElementType="ComboboxElement" name="cmbDomain">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[.//div[@id='cmbDomain']/table/tbody/tr]]></Value>
+            </Identification>
+          </WebObject>
+        </WebObject>
+        <WebObject xsi:type="Simple" webElementType="LinkElement" name="forgotPassword" externalize="false">
+          <Identification>
+            <IdentificationMethod>Id</IdentificationMethod>
+            <Value><![CDATA[lnkForgotPassword]]></Value>
+          </Identification>
+        </WebObject>
+        <WebObject xsi:type="Simple" webElementType="LinkElement" name="createAccount" externalize="false">
+          <Identification>
+            <IdentificationMethod>Id</IdentificationMethod>
+            <Value><![CDATA[lnkCreateAccount]]></Value>
+          </Identification>
+        </WebObject>
+      </WebObject>
+      <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageFooter" externalize="false">
+        <Identification>
+          <IdentificationMethod>XPath</IdentificationMethod>
+          <Value><![CDATA[./div[@id='footer']]]></Value>
+        </Identification>
+      </WebObject>
+    </WebObject>
+  </Page>
+  <Page name="Projects" url="/CxWebClient/Projects.aspx">
+    <WebObject xsi:type="Simple" webElementType="FormElement" name="frmMain" description="the main from" externalize="false">
+      <Identification>
+        <IdentificationMethod>XPath</IdentificationMethod>
+        <Value><![CDATA[./form]]></Value>
+      </Identification>
+      <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="mainContent" externalize="false">
+        <Identification>
+          <IdentificationMethod>XPath</IdentificationMethod>
+          <Value><![CDATA[./div[@id='main']]]></Value>
+        </Identification>
+        <WebObject xsi:type="Simple" webElementType="PageHeaderElement" name="pageHeader" description="the page header" externalize="false">
+          <Identification>
+            <IdentificationMethod>TagName</IdentificationMethod>
+            <Value><![CDATA[header]]></Value>
+          </Identification>
+        </WebObject>
+        <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageContent" description="the page content" externalize="false">
+          <Identification>
+            <IdentificationMethod>XPath</IdentificationMethod>
+            <Value><![CDATA[./div[@id='content']]]></Value>
+          </Identification>
+          <WebObject xsi:type="Simple" webElementType="DataGridElement" name="dataGrid" description="the grid that contains the main table" externalize="true">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[.//div[contains(@id,'_cpmain_ProjectsGridPanel')]/div[contains(@id,'_cpmain_ProjectsGrid')]]]></Value>
+            </Identification>
+            <WebObject xsi:type="Simple" webElementType="TableElement" name="tblMain" description="the main table" externalize="true">
+              <Identification>
+                <IdentificationMethod>XPath</IdentificationMethod>
+                <Value><![CDATA[./div[contains(@id,'_cpmain_ProjectsGrid_GridData')]]]></Value>
+              </Identification>
+              <WebObject xsi:type="Collection" webElementType="TableHeaderCollectionElement" name="headers">
+                <Identification>
+                  <IdentificationMethod>XPath</IdentificationMethod>
+                  <Value><![CDATA[./preceding-sibling::div[1]]]></Value>
+                </Identification>
+              </WebObject>
+              <WebObject xsi:type="Collection" webElementType="TableRowCollectionElement" name="rows">
+                <Identification>
+                  <IdentificationMethod>XPath</IdentificationMethod>
+                  <Value><![CDATA[./table/tbody]]></Value>
+                </Identification>
+              </WebObject>
+              <WebObject xsi:type="Simple" webElementType="PagerElement" name="pager">
+                <Identification>
+                  <IdentificationMethod>XPath</IdentificationMethod>
+                  <Value><![CDATA[./following-sibling::table[1]]]></Value>
+                </Identification>
+              </WebObject>
+            </WebObject>
+          </WebObject>
+          <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="detailsPanel" description="contains all the details of the selected row" externalize="true">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[.//div[contains(@id,'_pnlWrapperPanel')]/div[contains(@id,'_pnlWrapper')]/div[contains(@id,'_pnlDetailsPanel')]]]></Value>
+            </Identification>
+            <WebObject xsi:type="Simple" webElementType="TabControlElement" name="projectDetails">
+              <Identification>
+                <IdentificationMethod>XPath</IdentificationMethod>
+                <Value><![CDATA[./div[contains(@id,'_pnlDetails')]]]></Value>
+              </Identification>
+              <WebObject xsi:type="Collection" webElementType="TabCollectionElement" name="tabs">
+                <Identification>
+                  <IdentificationMethod>XPath</IdentificationMethod>
+                  <Value><![CDATA[./div[contains(@id,'_ProjectTabStrip')]/div/ul]]></Value>
+                </Identification>
+                <WebObject xsi:type="Simple" webElementType="TabElement" name="monitoringTab">
+                  <Identification>
+                    <IdentificationMethod>XPath</IdentificationMethod>
+                    <Value><![CDATA[./li/a[descendant::text()='Monitoring']]]></Value>
+                  </Identification>
+                </WebObject>
+                <WebObject xsi:type="Simple" webElementType="TabElement" name="GeneralTab">
+                  <Identification>
+                    <IdentificationMethod>XPath</IdentificationMethod>
+                    <Value><![CDATA[./li/a[descendant::text()='General']]]></Value>
+                  </Identification>
+                </WebObject>
+                <WebObject xsi:type="Simple" webElementType="TabElement" name="LocationTab">
+                  <Identification>
+                    <IdentificationMethod>XPath</IdentificationMethod>
+                    <Value><![CDATA[./li/a[descendant::text()='Location']]]></Value>
+                  </Identification>
+                </WebObject>
+                <WebObject xsi:type="Simple" webElementType="TabElement" name="SchedulingTab">
+                  <Identification>
+                    <IdentificationMethod>XPath</IdentificationMethod>
+                    <Value><![CDATA[./li/a[descendant::text()='Scheduling']]]></Value>
+                  </Identification>
+                </WebObject>
+                <WebObject xsi:type="Simple" webElementType="TabElement" name="AdvancedTab">
+                  <Identification>
+                    <IdentificationMethod>XPath</IdentificationMethod>
+                    <Value><![CDATA[./li/a[descendant::text()='Advanced']]]></Value>
+                  </Identification>
+                </WebObject>
+                <WebObject xsi:type="Simple" webElementType="TabElement" name="CustomFieldsTab">
+                  <Identification>
+                    <IdentificationMethod>XPath</IdentificationMethod>
+                    <Value><![CDATA[./li/a[descendant::text()='Custom Fields']]]></Value>
+                  </Identification>
+                </WebObject>
+                <WebObject xsi:type="Simple" webElementType="TabElement" name="DataRetentionTab">
+                  <Identification>
+                    <IdentificationMethod>XPath</IdentificationMethod>
+                    <Value><![CDATA[./li/a[descendant::text()='Data Retention']]]></Value>
+                  </Identification>
+                </WebObject>
+              </WebObject>
+              <WebObject xsi:type="Collection" webElementType="TabPageCollectionElement" name="tabPages">
+                <Identification>
+                  <IdentificationMethod>XPath</IdentificationMethod>
+                  <Value><![CDATA[./div[contains(@id,'_cpmain_mpRoject')]]]></Value>
+                </Identification>
+              </WebObject>
+              <WebObject xsi:type="Simple" webElementType="ButtonElement" name="update">
+                <Identification>
+                  <IdentificationMethod>XPath</IdentificationMethod>
+                  <Value><![CDATA[./div[Last()]//input[@type='button']]]></Value>
+                </Identification>
+              </WebObject>
+            </WebObject>
+          </WebObject>
+        </WebObject>
+        <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageFooter" description="the page footer" externalize="false">
+          <Identification>
+            <IdentificationMethod>XPath</IdentificationMethod>
+            <Value><![CDATA[./footer[@id='footer']]]></Value>
+          </Identification>
+        </WebObject>
+      </WebObject>
+    </WebObject>
+  </Page>
+  <Page name="ProjectScans" url="/CxWebClient/ProjectScans.aspx">
+    <WebObject xsi:type="Simple" webElementType="FormElement" name="frmMain" description="the main from" externalize="false">
+      <Identification>
+        <IdentificationMethod>XPath</IdentificationMethod>
+        <Value><![CDATA[./form]]></Value>
+      </Identification>
+      <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="mainContent" externalize="false">
+        <Identification>
+          <IdentificationMethod>XPath</IdentificationMethod>
+          <Value><![CDATA[./div[@id='main']]]></Value>
+        </Identification>
+        <WebObject xsi:type="Simple" webElementType="PageHeaderElement" name="pageHeader" externalize="false">
+          <Identification>
+            <IdentificationMethod>TagName</IdentificationMethod>
+            <Value><![CDATA[./header]]></Value>
+          </Identification>
+        </WebObject>
+        <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageContent" externalize="false">
+          <Identification>
+            <IdentificationMethod>XPath</IdentificationMethod>
+            <Value><![CDATA[./div[@id='content']]]></Value>
+          </Identification>
+        </WebObject>
+        <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageFooter" externalize="false">
+          <Identification>
+            <IdentificationMethod>XPath</IdentificationMethod>
+            <Value><![CDATA[./footer[@id='footer']]]></Value>
+          </Identification>
+        </WebObject>
+      </WebObject>
+    </WebObject>
+  </Page>
+  <Page name="ProjectState" url="/CxWebClient/ProjectState.aspx">
+    <WebObject xsi:type="Simple" webElementType="FormElement" name="frmMain" description="the main from" externalize="true">
+      <Identification>
+        <IdentificationMethod>XPath</IdentificationMethod>
+        <Value><![CDATA[./form]]></Value>
+      </Identification>
+      <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="mainContent" externalize="false">
+        <Identification>
+          <IdentificationMethod>XPath</IdentificationMethod>
+          <Value><![CDATA[./div[@id='main']]]></Value>
+        </Identification>
+        <WebObject xsi:type="Simple" webElementType="PageHeaderElement" name="pageHeader" externalize="false">
+          <Identification>
+            <IdentificationMethod>TagName</IdentificationMethod>
+            <Value><![CDATA[header]]></Value>
+          </Identification>
+        </WebObject>
+        <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageContent" externalize="false">
+          <Identification>
+            <IdentificationMethod>XPath</IdentificationMethod>
+            <Value><![CDATA[./div[@id='content']]]></Value>
+          </Identification>
+          <WebObject xsi:type="Simple" webElementType="DataGridElement" name="dataGrid">
+            <Identification>
+              <IdentificationMethod>XPath</IdentificationMethod>
+              <Value><![CDATA[.//div[contains(@id,'_cpmain_ProjectStateGridPanel')]/div[contains(@id,'_cpmain_ProjectStateGrid')]]]></Value>
+            </Identification>
+            <WebObject xsi:type="Simple" webElementType="TableElement" name="tblMain">
+              <Identification>
+                <IdentificationMethod>XPath</IdentificationMethod>
+                <Value><![CDATA[./div[contains(@id,'_cpmain_ProjectStateGrid_GridData')]]]></Value>
+              </Identification>
+            </WebObject>
+          </WebObject>
+        </WebObject>
+        <WebObject xsi:type="Simple" webElementType="WebAreaElement" name="pageFooter" externalize="false">
+          <Identification>
+            <IdentificationMethod>XPath</IdentificationMethod>
+            <Value><![CDATA[./footer[@id='footer']]]></Value>
+          </Identification>
+        </WebObject>
+      </WebObject>
+    </WebObject>
+  </Page>
+</Browser>

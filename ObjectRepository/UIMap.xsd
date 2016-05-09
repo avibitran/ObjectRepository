@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="UIMap"
+    attributeFormDefault="unqualified"
+    elementFormDefault="qualified"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:cdata="http://www.w3.org/2001/XMLSchema:CDATA">
+  <xs:element name="Browser" type="BrowserType">
+    <xs:key name="name">
+      <xs:selector xpath="Page"/>
+      <xs:field xpath="@name"/>
+    </xs:key>
+  </xs:element>
+
+  <xs:complexType name="BrowserType">
+    <xs:sequence>
+      <xs:element name="Page" type="PageType" minOccurs="0" maxOccurs="unbounded">
+      </xs:element>
+    </xs:sequence>
+    <xs:attribute name="driver" type="DriverType" default="FirefoxDriver" use="optional" />
+    <xs:attribute name="name" type="xs:string" fixed="Browser" use="required" />
+  </xs:complexType>
+
+  <xs:complexType name="PageType">
+    <xs:choice>
+      <xs:element ref="WebObject" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:choice>
+    <xs:attribute name="name" type="xs:string" use="required"/>
+    <xs:attribute name="url" type="xs:string" use="required"/>
+  </xs:complexType>
+
+  <xs:element name="WebObject" type="WebObjectBase">
+    <!--<xs:sequence>
+      <xs:element name="Identification" type="ByType"/>
+      <xs:element name="WebObject" type="WebElement" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="WebElementAttributes"/>-->
+  </xs:element>
+
+  <xs:complexType name="WebObjectBase" abstract="true">
+    <xs:sequence>
+      <xs:element name="Identification" type="ByType"/>
+      <xs:element ref="WebObject" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    <xs:attributeGroup ref="WebBaseAttributes"/>
+  </xs:complexType>
+
+  <xs:attributeGroup name="WebBaseAttributes">
+    <xs:attribute name="name" type="namePatternConstraint" use="required"/>
+    <xs:attribute name="description" type="xs:string" use="optional"/>
+    <xs:attribute name="externalize" type="xs:boolean" default="false"/>
+  </xs:attributeGroup>
+  
+  <xs:complexType name="Simple">
+    <xs:complexContent>
+      <xs:extension base="WebObjectBase">
+        <xs:attribute name="webElementType" type="WebElementType"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+
+  <xs:complexType name="Collection">
+    <xs:complexContent>
+      <xs:extension base="WebObjectBase">
+        <xs:attribute name="webElementType" type="WebElementCollectionType"/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  
+  <xs:simpleType name="DriverType">
+    <xs:restriction base="xs:string" id="DriverTypeConstraint">
+      <xs:enumeration value="FirefoxDriver"/>
+      <xs:enumeration value="EdgeDriver"/>
+      <xs:enumeration value="ChromeDriver"/>
+      <xs:enumeration value="InternetExplorerDriver"/>
+      <xs:enumeration value="OperaDriver"/>
+      <xs:enumeration value="SafariDriver"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <!--<xs:attributeGroup name="WebElementAttributes">
+    <xs:attribute name="name" type="namePatternConstraint" use="required"/>
+    <xs:attribute name="description" type="xs:string" use="optional"/>
+    <xs:attribute name="webElementType" type="WebElementType"/>
+    <xs:attribute name="externalize" type="xs:boolean" default="false"/>
+  </xs:attributeGroup>-->
+
+  <xs:simpleType name="WebElementCollectionType">
+    <xs:restriction base="xs:string" id="WebElementCollectionTypeConstraint">
+      <xs:enumeration value="TabCollectionElement"/>
+      <xs:enumeration value="TableHeaderCollectionElement"/>
+      <xs:enumeration value="TableRowCollectionElement"/>
+      <xs:enumeration value="TabPageCollectionElement"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:simpleType name="WebElementType">
+    <xs:restriction base="xs:string" id="WebElementTypeConstraint">
+      <xs:enumeration value="ButtonElement"/>
+      <xs:enumeration value="CheckBoxElement"/>
+      <xs:enumeration value="ComboboxElement"/>
+      <xs:enumeration value="DataGridElement"/>
+      <xs:enumeration value="FormElement"/>
+      <xs:enumeration value="ImageElement"/>
+      <xs:enumeration value="LabelElement"/>
+      <xs:enumeration value="LinkElement"/>
+      <xs:enumeration value="MainMenuElement"/>
+      <xs:enumeration value="MenuItemElement"/>
+      <xs:enumeration value="PageHeaderElement"/>
+      <xs:enumeration value="PagerElement"/>
+      <xs:enumeration value="PanelElement"/>
+      <xs:enumeration value="RadioButtonElement"/>
+      <xs:enumeration value="TabControlElement"/>
+      <xs:enumeration value="TabElement"/>
+      <xs:enumeration value="TableElement"/>
+      <xs:enumeration value="TabPageElement"/>
+      <xs:enumeration value="TextBoxElement"/>
+      <xs:enumeration value="ToolBarCollectionElement"/>
+      <xs:enumeration value="ToolbarHolderElement"/>
+      <xs:enumeration value="ToolBarItemElement"/>
+      <xs:enumeration value="WebAreaElement"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="ByType">
+    <xs:sequence>
+      <xs:element name="IdentificationMethod">
+        <xs:simpleType>
+          <xs:restriction base="xs:string" id="IdentificationMethodTypeConstraint">
+            <xs:enumeration value="ClassName"/>
+            <xs:enumeration value="CssSelector"/>
+            <xs:enumeration value="Id"/>
+            <xs:enumeration value="LinkText"/>
+            <xs:enumeration value="Name"/>
+            <xs:enumeration value="PartialLinkText"/>
+            <xs:enumeration value="TagName"/>
+            <xs:enumeration value="XPath"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="Value" default="&lt;!CDATA[]]&gt;"/>
+    </xs:sequence>
+  </xs:complexType>
+
+  <xs:simpleType name="namePatternConstraint">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z][a-zA-Z0-9_]+"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
