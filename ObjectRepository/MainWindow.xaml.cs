@@ -68,6 +68,8 @@ namespace ObjectRepository
                     Name = "Browser", 
                     DriverType = (DriverType)Enum.Parse(typeof(DriverType), element.Attributes["driver"].Value),
                 };
+
+                (this.grdProperties.SelectedObject as Browser).PropertyChanged += grdProperties_SelectedObjectPropertyChanged;
             }
             else if(element.LocalName.Equals("Page"))
             {
@@ -76,6 +78,8 @@ namespace ObjectRepository
                     Name = element.Attributes["name"].Value,
                     Url = element.Attributes["url"].Value,
                 };
+
+                (this.grdProperties.SelectedObject as Ab.Wpf.Controls.Page).PropertyChanged += grdProperties_SelectedObjectPropertyChanged;
             }
             else
             {
@@ -95,6 +99,8 @@ namespace ObjectRepository
                         IdentificationMethod = (Identification.MethodType)Enum.Parse(typeof(Identification.MethodType), identificationMethod),
                         Expression = identificationValue,
                     };
+
+                    (this.grdProperties.SelectedObject as WebObject).PropertyChanged += grdProperties_SelectedObjectPropertyChanged;
                 }
                 else
                 {
@@ -110,9 +116,16 @@ namespace ObjectRepository
                         IdentificationMethod = (Identification.MethodType)Enum.Parse(typeof(Identification.MethodType), identificationMethod),
                         Expression = identificationValue,
                     };
+
+                    (this.grdProperties.SelectedObject as WebObjectCollection).PropertyChanged += grdProperties_SelectedObjectPropertyChanged;
                 }
             }
             //this.grdProperties.SelectedObject = e.NewValue;
+        }
+
+        private void grdProperties_SelectedObjectPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            base.Edited = true;
         }
 
         #endregion
@@ -124,10 +137,5 @@ namespace ObjectRepository
             get { return _filePath; }
         }
         #endregion
-
-        private void grdProperties_ManipulationCompleted(object sender, ManipulationCompletedEventArgs e)
-        {
-            
-        }
     }
 }

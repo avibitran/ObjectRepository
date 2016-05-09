@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:control="clr-namespace:Ab.Wpf.Controls;assembly=Ab.Wpf.Controls"
-        Title="MainWindow" Height="350" Width="525">
+        Title="ObjectRepository" Height="350" Width="525">
     <control:CustomMainWindow.Resources>
         <HierarchicalDataTemplate x:Key="NodeTemplate">
             <TextBlock x:Name="text" Text="{Binding @name}">

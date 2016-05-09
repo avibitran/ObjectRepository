@@ -67,9 +67,15 @@
                                     <ColumnDefinition />
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Rectangle x:Name="moveRectangle" Fill="WhiteSmoke"
-                                           Grid.Row="0" Grid.Column="0"/>
-                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Background="WhiteSmoke">
+                                <Grid x:Name="moveGrid" Grid.Row="0" Grid.Column="0" Background="WhiteSmoke">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock x:Name="editedMark" Grid.Column="0" Text="*" Foreground="DarkRed" Visibility="Hidden" Padding="5,0,2,0"/>
+                                    <TextBlock x:Name="windowTitle" Grid.Column="1" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:CustomMainWindow}}}"/>
+                                </Grid>
+                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Background="WhiteSmoke">
                                     <Button x:Name="minimizeButton" Style="{StaticResource WindowButtonStyle}"
                                             Content="0" />
                                     <Button x:Name="restoreButton" Style="{StaticResource WindowButtonStyle}"

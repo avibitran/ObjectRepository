@@ -73,9 +73,9 @@ namespace Ab.Wpf.Controls
             if (closeButton != null)
                 closeButton.Click += CloseClick;
 
-            Rectangle moveRectangle = GetTemplateChild("moveRectangle") as Rectangle;
-            if (moveRectangle != null)
-                moveRectangle.PreviewMouseDown += moveRectangle_PreviewMouseDown;
+            Grid moveGrid = GetTemplateChild("moveGrid") as Grid;
+            if (moveGrid != null)
+                moveGrid.PreviewMouseDown += moveGrid_PreviewMouseDown;
 
             Grid resizeGrid = GetTemplateChild("resizeGrid") as Grid;
             if (resizeGrid != null)
@@ -90,6 +90,16 @@ namespace Ab.Wpf.Controls
                     }
                 }
             }
+
+            //TextBlock windowTitle = GetTemplateChild("windowTitle") as TextBlock;
+            //if (windowTitle != null)
+            //{
+            //    string title = this.Title;
+            //    if (!String.IsNullOrEmpty(title))
+            //    {
+            //        windowTitle.Text = title;
+            //    }
+            //}
             
             base.OnApplyTemplate();
         }
@@ -109,7 +119,7 @@ namespace Ab.Wpf.Controls
             Close();
         }
 
-        private void moveRectangle_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void moveGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
                 DragMove();
@@ -194,7 +204,27 @@ namespace Ab.Wpf.Controls
         #endregion
 
         #region Fields
-
+        public bool Edited
+        {
+            get
+            {
+                TextBlock editedMark = GetTemplateChild("editedMark") as TextBlock;
+                if (editedMark != null)
+                {
+                    return (editedMark.Visibility.Equals(Visibility.Visible));
+                }
+                else
+                    return false;
+            }
+            set
+            {
+                TextBlock editedMark = GetTemplateChild("editedMark") as TextBlock;
+                if (editedMark != null)
+                {
+                    editedMark.Visibility = Visibility.Visible;
+                }
+            }
+        }
         #endregion
 
         #region Inner Classes

@@ -159,35 +159,35 @@ namespace Ab.Wpf.Controls
                 pg.OnSelectionChangedMethod.Invoke(pg.Designer.PropertyInspectorView, new object[] { selection });
                 pg.SelectionTypeLabel.Text = String.Format("{0} ({1})", (e.NewValue as IWebObject).Name, (e.NewValue as IWebObject).TypeAsString);
 
-                ReleaseObjectsEvents();
+                //ReleaseObjectsEvents();
 
-                ObjectTypes type = (e.NewValue as IWebObject).Type;
-                switch(type)
-                {
-                    case ObjectTypes.Browser:
-                        _selectedObjects = new object[] { e.NewValue };
-                        (_selectedObjects[0] as Browser).PropertyChanged += SelectedObject_PropertyChanged;
-                        break;
+                //ObjectTypes type = (e.NewValue as IWebObject).Type;
+                //switch(type)
+                //{
+                //    case ObjectTypes.Browser:
+                //        _selectedObjects = new object[] { e.NewValue };
+                //        //(_selectedObjects[0] as Browser).PropertyChanged += SelectedObject_PropertyChanged;
+                //        break;
 
-                    case ObjectTypes.Page:
-                        _selectedObjects = new object[] { e.NewValue };
-                        (_selectedObjects[0] as Page).PropertyChanged += SelectedObject_PropertyChanged;
-                        break;
+                //    case ObjectTypes.Page:
+                //        _selectedObjects = new object[] { e.NewValue };
+                //        //(_selectedObjects[0] as Page).PropertyChanged += SelectedObject_PropertyChanged;
+                //        break;
 
-                    default:
-                        _selectedObjects = new object[] { e.NewValue };
-                        if (((int)type >= 100) && ((int)type < 200))
-                        {
-                            (_selectedObjects[0] as WebObject).PropertyChanged += SelectedObject_PropertyChanged;
-                        }
-                        else if (((int)type >= 200) && ((int)type < 300))
-                        {
-                            (_selectedObjects[0] as WebObjectCollection).PropertyChanged += SelectedObject_PropertyChanged;
-                        }
-                        else
-                            throw new ArgumentException("the selected element cannot be bind.");
-                        break;
-                }
+                //    default:
+                //        _selectedObjects = new object[] { e.NewValue };
+                //        if (((int)type >= 100) && ((int)type < 200))
+                //        {
+                //            (_selectedObjects[0] as WebObject).PropertyChanged += SelectedObject_PropertyChanged;
+                //        }
+                //        else if (((int)type >= 200) && ((int)type < 300))
+                //        {
+                //            (_selectedObjects[0] as WebObjectCollection).PropertyChanged += SelectedObject_PropertyChanged;
+                //        }
+                //        else
+                //            throw new ArgumentException("the selected element cannot be bind.");
+                //        break;
+                //}
             }
 
             pg.ChangeHelpText(string.Empty, string.Empty);
@@ -258,10 +258,10 @@ namespace Ab.Wpf.Controls
             }        
         }
 
-        private static void SelectedObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            //CustomPropertyGrid_PropertyChanged(sender, e.PropertyName, PropertyGridChangeAction.Replace);
-        }
+        //private static void SelectedObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        //{
+        //    //CustomPropertyGrid_PropertyChanged(sender, e.PropertyName, PropertyGridChangeAction.Replace);
+        //}
 
         private static void ToolbarVisiblePropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
@@ -389,8 +389,10 @@ namespace Ab.Wpf.Controls
                 var theSelectedObjects = this.GetValue(SelectedObjectsProperty) as object[];
 
                 if (theSelectedObjects == null || theSelectedObjects.Length == 0)
-                    theSelectedObjects = new object[] { this.GetValue(SelectedObjectProperty) as object };
-
+                {
+                    theSelectedObjects = ((this.GetValue(SelectedObjectProperty) as object) != null) ? new object[] { this.GetValue(SelectedObjectProperty) as object } : null;
+                }
+                
                 if (theSelectedObjects != null && theSelectedObjects.Length > 0)
                 {
                     Type first = theSelectedObjects[0].GetType();
@@ -404,33 +406,36 @@ namespace Ab.Wpf.Controls
                     }
 
                     object data = (args.OriginalSource as FrameworkElement).DataContext;
-                    PropertyInfo propEntry = data.GetType().GetProperty("PropertyEntry");
-                    if (propEntry == null)
+                    if (data != null)
                     {
-                        propEntry = data.GetType().GetProperty("ParentProperty");
+                        PropertyInfo propEntry = data.GetType().GetProperty("PropertyEntry");
+                        if (propEntry == null)
+                        {
+                            propEntry = data.GetType().GetProperty("ParentProperty");
+                        }
+
+                        if (propEntry != null)
+                        {
+                            object propEntryValue = propEntry.GetValue(data, null);
+                            string propName = propEntryValue.GetType().GetProperty("PropertyName").GetValue(propEntryValue, null) as string;
+                            title = propEntryValue.GetType().GetProperty("DisplayName").GetValue(propEntryValue, null) as string;
+                            PropertyInfo property = theSelectedObjects[0].GetType().GetProperty(propName);
+                            object[] attrs = property.GetCustomAttributes(typeof(DescriptionAttribute), true);
+
+                            if (attrs != null && attrs.Length > 0)
+                                descrip = (attrs[0] as DescriptionAttribute).Description;
+                        }
+
+                        //PropertyDescriptor prop;
+
+                        //prop = TypeDescriptor.GetProperties(theSelectedObjects[0])["Name"];
+                        //title = (string)prop.GetValue(theSelectedObjects[0]);
+
+                        //prop = TypeDescriptor.GetProperties(theSelectedObjects[0])["Description"];
+                        //descrip = (string)prop.GetValue(theSelectedObjects[0]);
+
+                        ChangeHelpText(title, descrip);
                     }
-
-                    if (propEntry != null)
-                    {
-                        object propEntryValue = propEntry.GetValue(data, null);
-                        string propName = propEntryValue.GetType().GetProperty("PropertyName").GetValue(propEntryValue, null) as string;
-                        title = propEntryValue.GetType().GetProperty("DisplayName").GetValue(propEntryValue, null) as string;
-                        PropertyInfo property = theSelectedObjects[0].GetType().GetProperty(propName);
-                        object[] attrs = property.GetCustomAttributes(typeof(DescriptionAttribute), true);
-
-                        if (attrs != null && attrs.Length > 0)
-                            descrip = (attrs[0] as DescriptionAttribute).Description;
-                    }
-
-                    //PropertyDescriptor prop;
-
-                    //prop = TypeDescriptor.GetProperties(theSelectedObjects[0])["Name"];
-                    //title = (string)prop.GetValue(theSelectedObjects[0]);
-
-                    //prop = TypeDescriptor.GetProperties(theSelectedObjects[0])["Description"];
-                    //descrip = (string)prop.GetValue(theSelectedObjects[0]);
-
-                    ChangeHelpText(title, descrip);
                 }
             //}
         }
@@ -445,15 +450,15 @@ namespace Ab.Wpf.Controls
             (dock.Children[1] as TextBlock).Text = descrip;
         }
 
-        private static void ReleaseObjectsEvents()
-        {
-            if(_selectedObjects != null)
-            {
-                foreach (object selectedObject in _selectedObjects)
-                {
-                    (selectedObject as IWebObject).PropertyChanged -= SelectedObject_PropertyChanged;
-                }
-            }
-        }
+        //private static void ReleaseObjectsEvents()
+        //{
+        //    if(_selectedObjects != null)
+        //    {
+        //        foreach (object selectedObject in _selectedObjects)
+        //        {
+        //            (selectedObject as IWebObject).PropertyChanged -= SelectedObject_PropertyChanged;
+        //        }
+        //    }
+        //}
     }
 }
