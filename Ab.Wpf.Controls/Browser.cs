@@ -22,7 +22,12 @@ namespace Ab.Wpf.Controls
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set
+            {
+                string oldValue = _name;
+                _name = value;
+                OnPropertyChanged("Name", value, oldValue);
+            }
         }
 
         [Category("Misc")]
@@ -31,10 +36,11 @@ namespace Ab.Wpf.Controls
         public DriverType DriverType
         {
             get { return _type; }
-            set 
-            { 
+            set
+            {
+                DriverType oldValue = _type;
                 _type = value;
-                NotifyPropertyChanged("Type");
+                OnPropertyChanged("DriverType", value, oldValue);
             }
         }
 
@@ -55,12 +61,11 @@ namespace Ab.Wpf.Controls
         #region INotifyPropertyChanged Members
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void NotifyPropertyChanged(String info)
+        protected void OnPropertyChanged<T>(string propertyName, T oldValue, T newValue)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
+            var handler = this.PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs<T>(propertyName, oldValue, newValue));
         }
         #endregion
     }

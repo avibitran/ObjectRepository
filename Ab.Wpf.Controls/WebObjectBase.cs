@@ -26,28 +26,8 @@ namespace Ab.Wpf.Controls
         string Expression { get; set; }
     }
 
-    public class PropertyChangedEventArgs
-        : RoutedEventArgs
-    {
-        public PropertyChangedEventArgs()
-        { }
-
-        public PropertyChangedEventArgs(object target, string propertyName, string newValue, string oldValue)
-        {
-            this.PropertyName = propertyName;
-            this.OldValue = oldValue;
-            this.NewValue = newValue;
-            this.Target = target;
-        }
-
-        public string PropertyName;
-        public string OldValue;
-        public string NewValue;
-        public object Target;
-    }
-
     public abstract class WebObjectBase
-        : UIElement, IWebObjectElement, IWebObject // , INotifyPropertyChanged
+        : IWebObjectElement, IWebObject, INotifyPropertyChanged
     {
         #region Members
         private string _name;
@@ -62,14 +42,12 @@ namespace Ab.Wpf.Controls
         [Description("A unique name to identify the element.")]
         public string Name
         {
-            get { return (string)GetValue(NameProperty); }
+            get { return _name; }
             set 
             {
-                SetValue(NameProperty, value);
-                //string oldValue = _name;
-                //_name = value;
-                ////NotifyPropertyChanged("Name");
-                //RaiseNamePropertyChanged(value, oldValue);
+                string oldValue = _name;
+                _name = value;
+                OnPropertyChanged("Name", value, oldValue);
             }
         }
 
@@ -89,8 +67,9 @@ namespace Ab.Wpf.Controls
             get { return _description; }
             set 
             {
+                string oldValue = _description;
                 _description = value;
-                //NotifyPropertyChanged("Description");
+                OnPropertyChanged("Description", value, oldValue);
             }
         }
 
@@ -102,8 +81,9 @@ namespace Ab.Wpf.Controls
             get { return _external; }
             set 
             {
+                bool oldValue = _external;
                 _external = value;
-                //NotifyPropertyChanged("External");
+                OnPropertyChanged("External", value, oldValue);
             }
         }
 
@@ -113,10 +93,11 @@ namespace Ab.Wpf.Controls
         public Identification.MethodType IdentificationMethod
         {
             get { return _identification.Type; }
-            set 
+            set
             {
+                Identification.MethodType oldValue = _identification.Type;
                 _identification.Type = value;
-                //NotifyPropertyChanged("IdentificationMethod");
+                OnPropertyChanged("IdentificationMethod", value, oldValue);
             }
         }
 
@@ -126,65 +107,25 @@ namespace Ab.Wpf.Controls
         public string Expression
         {
             get { return _identification.Value; }
-            set 
+            set
             {
+                string oldValue = _identification.Value;
                 _identification.Value = value;
-                //NotifyPropertyChanged("Expression");
+                OnPropertyChanged("Expression", value, oldValue);
             }
         }
         #endregion
 
-        public static readonly DependencyProperty NameProperty =
-            DependencyProperty.Register("Name", typeof(object), typeof(WebObjectBase),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, NamePropertyChanged));
 
-        private static void NamePropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        #region INotifyPropertyChanged Members
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged<T>(string propertyName, T oldValue, T newValue)
         {
-            WebObjectBase sender = source as WebObjectBase;
-            RaiseNamePropertyChanged((UIElement)source, (string)e.NewValue, (string)e.OldValue);
+            var handler = this.PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs<T>(propertyName, oldValue, newValue));
         }
-
-        /// <summary>
-        /// A helper method to raise the AnimationStarted event.
-        /// </summary>
-        protected RoutedEventArgs RaiseNamePropertyChanged(string newValue, string oldValue)
-        {
-            return RaiseNamePropertyChanged((UIElement)this, newValue, oldValue);
-        }
-
-        internal static RoutedEventArgs RaiseNamePropertyChanged(UIElement target, string newValue, string oldValue)
-        {
-            if (target == null) return null;
-
-            PropertyChangedEventArgs args = new PropertyChangedEventArgs(target, "Name", newValue, oldValue);
-
-            RaiseEvent(target, args);
-            return args;
-        }
-
-        private static void RaiseEvent(DependencyObject target, RoutedEventArgs args)
-        {
-            if (target is UIElement)
-            {
-                (target as UIElement).RaiseEvent(args);
-            }
-            else if (target is ContentElement)
-            {
-                (target as ContentElement).RaiseEvent(args);
-            }
-        }
-
-
-        //#region INotifyPropertyChanged Members
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        //protected void NotifyPropertyChanged(String info)
-        //{
-        //    if (PropertyChanged != null)
-        //    {
-        //        PropertyChanged(this, new PropertyChangedEventArgs(info));
-        //    }
-        //}
-        //#endregion
+        #endregion
     }
 }
