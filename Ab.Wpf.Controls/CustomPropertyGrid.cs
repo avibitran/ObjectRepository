@@ -178,7 +178,7 @@ namespace Ab.Wpf.Controls
                         _selectedObjects = new object[] { e.NewValue };
                         if (((int)type >= 100) && ((int)type < 200))
                         {
-                            (_selectedObjects[0] as WebObject).AddHandler((_selectedObjects[0] as WebObject).name += SelectedObject_PropertyChanged;
+                            (_selectedObjects[0] as WebObject).PropertyChanged += SelectedObject_PropertyChanged;
                         }
                         else if (((int)type >= 200) && ((int)type < 300))
                         {
@@ -434,42 +434,12 @@ namespace Ab.Wpf.Controls
 
         private static void ReleaseObjectsEvents()
         {
-            if(_selectedObjects != null)
+            if (_selectedObjects != null)
             {
                 foreach (object selectedObject in _selectedObjects)
                 {
                     (selectedObject as IWebObject).PropertyChanged -= SelectedObject_PropertyChanged;
                 }
-            }
-        }
-
-        /// <summary>
-        /// A helper method to raise the AnimationStarted event.
-        /// </summary>
-        protected RoutedEventArgs RaiseSelectedObjectPropertyChanged(object element, string propertyName, PropertyGridChangeAction action)
-        {
-            return RaiseSelectedObjectPropertyChanged(this, new PropertyGridChangedEventArgs(element, propertyName, action));
-        }
-
-        internal static RoutedEventArgs RaiseSelectedObjectPropertyChanged(UIElement target, PropertyGridChangedEventArgs e)
-        {
-            if (target == null) return null;
-
-            e.RoutedEvent = SelectedObjectPropertyChangedEvent;
-
-            RaiseEvent(target, e);
-            return e;
-        }
-
-        private static void RaiseEvent(DependencyObject target, RoutedEventArgs args)
-        {
-            if (target is UIElement)
-            {
-                (target as UIElement).RaiseEvent(args);
-            }
-            else if (target is ContentElement)
-            {
-                (target as ContentElement).RaiseEvent(args);
             }
         }
     }

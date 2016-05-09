@@ -59,6 +59,7 @@
     <Compile Include="CustomPropertyGrid.cs" />
     <Compile Include="DriverType.cs" />
     <Compile Include="Identification.cs" />
+    <Compile Include="PropertyChangedEventArgs.cs" />
     <Compile Include="ObjectType.cs" />
     <Compile Include="ObjectTypes.cs" />
     <Compile Include="Page.cs" />

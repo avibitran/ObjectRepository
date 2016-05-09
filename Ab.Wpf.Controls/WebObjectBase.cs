@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+//using System.;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,11 @@ using System.Windows.Controls;
 namespace Ab.Wpf.Controls
 {
     public interface IWebObject
+        : INotifyPropertyChanged
     {
         string Name { get; set; }
         string TypeAsString { get; }
         ObjectTypes Type { get; }
-        
-        event PropertyChangedEventHandler PropertyChanged;
     }
 
     public interface IWebObjectElement
@@ -26,28 +26,8 @@ namespace Ab.Wpf.Controls
         string Expression { get; set; }
     }
 
-    public class PropertyChangedEventArgs
-        : RoutedEventArgs
-    {
-        public PropertyChangedEventArgs()
-        { }
-
-        public PropertyChangedEventArgs(object target, string propertyName, string newValue, string oldValue)
-        {
-            this.PropertyName = propertyName;
-            this.OldValue = oldValue;
-            this.NewValue = newValue;
-            this.Target = target;
-        }
-
-        public string PropertyName;
-        public string OldValue;
-        public string NewValue;
-        public object Target;
-    }
-
     public abstract class WebObjectBase
-        : UIElement, IWebObjectElement, IWebObject // , INotifyPropertyChanged
+        : IWebObjectElement, IWebObject
     {
         #region Members
         private string _name;
@@ -62,24 +42,16 @@ namespace Ab.Wpf.Controls
         [Description("A unique name to identify the element.")]
         public string Name
         {
-            get { return (string)GetValue(NameProperty); }
+            get { return _name; }
             set 
             {
-                SetValue(NameProperty, value);
-                //string oldValue = _name;
-                //_name = value;
-                ////NotifyPropertyChanged("Name");
-                //RaiseNamePropertyChanged(value, oldValue);
+                string oldValue;
+
+                oldValue = _name;
+                _name = value;
+                NotifyPropertyChanged("Name", oldValue, _name);
             }
         }
-
-        public abstract ObjectTypes Type
-        { 
-            get; 
-            set; 
-        }
-
-        public abstract string TypeAsString { get; }
 
         [Category("Misc")]
         [DisplayName("Description")]
@@ -87,10 +59,13 @@ namespace Ab.Wpf.Controls
         public string Description
         {
             get { return _description; }
-            set 
+            set
             {
+                string oldValue;
+
+                oldValue = _description;
                 _description = value;
-                //NotifyPropertyChanged("Description");
+                NotifyPropertyChanged("Description", oldValue, _description);
             }
         }
 
@@ -100,10 +75,13 @@ namespace Ab.Wpf.Controls
         public bool External
         {
             get { return _external; }
-            set 
+            set
             {
+                bool oldValue;
+
+                oldValue = _external;
                 _external = value;
-                //NotifyPropertyChanged("External");
+                NotifyPropertyChanged("External", oldValue, _external);
             }
         }
 
@@ -113,10 +91,13 @@ namespace Ab.Wpf.Controls
         public Identification.MethodType IdentificationMethod
         {
             get { return _identification.Type; }
-            set 
+            set
             {
+                Identification.MethodType oldValue;
+
+                oldValue = _identification.Type;
                 _identification.Type = value;
-                //NotifyPropertyChanged("IdentificationMethod");
+                NotifyPropertyChanged("IdentificationMethod", oldValue, _identification.Type);
             }
         }
 
@@ -126,65 +107,37 @@ namespace Ab.Wpf.Controls
         public string Expression
         {
             get { return _identification.Value; }
-            set 
+            set
             {
+                string oldValue;
+
+                oldValue = _identification.Value;
                 _identification.Value = value;
-                //NotifyPropertyChanged("Expression");
+                NotifyPropertyChanged("Expression", oldValue, _identification.Value);
             }
         }
+
+        public abstract ObjectTypes Type
+        {
+            get;
+            set;
+        }
+
+        public abstract string TypeAsString { get; }
         #endregion
 
-        public static readonly DependencyProperty NameProperty =
-            DependencyProperty.Register("Name", typeof(object), typeof(WebObjectBase),
-            new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, NamePropertyChanged));
+        public event PropertyChangedEventHandler PropertyChanged;
 
-        private static void NamePropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        protected void NotifyPropertyChanged<T>(string propertyName, T oldvalue, T newvalue)
         {
-            WebObjectBase sender = source as WebObjectBase;
-            RaiseNamePropertyChanged((UIElement)source, (string)e.NewValue, (string)e.OldValue);
+            OnPropertyChanged(this, new PropertyChangedEventArgs<T>(propertyName, oldvalue, newvalue));
         }
 
-        /// <summary>
-        /// A helper method to raise the AnimationStarted event.
-        /// </summary>
-        protected RoutedEventArgs RaiseNamePropertyChanged(string newValue, string oldValue)
+        public virtual void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            return RaiseNamePropertyChanged((UIElement)this, newValue, oldValue);
+            PropertyChangedEventHandler handler = PropertyChanged;
+            if (handler != null)
+                handler(sender, e);
         }
-
-        internal static RoutedEventArgs RaiseNamePropertyChanged(UIElement target, string newValue, string oldValue)
-        {
-            if (target == null) return null;
-
-            PropertyChangedEventArgs args = new PropertyChangedEventArgs(target, "Name", newValue, oldValue);
-
-            RaiseEvent(target, args);
-            return args;
-        }
-
-        private static void RaiseEvent(DependencyObject target, RoutedEventArgs args)
-        {
-            if (target is UIElement)
-            {
-                (target as UIElement).RaiseEvent(args);
-            }
-            else if (target is ContentElement)
-            {
-                (target as ContentElement).RaiseEvent(args);
-            }
-        }
-
-
-        //#region INotifyPropertyChanged Members
-        //public event PropertyChangedEventHandler PropertyChanged;
-
-        //protected void NotifyPropertyChanged(String info)
-        //{
-        //    if (PropertyChanged != null)
-        //    {
-        //        PropertyChanged(this, new PropertyChangedEventArgs(info));
-        //    }
-        //}
-        //#endregion
     }
 }
