@@ -385,7 +385,11 @@ namespace Ab.Wpf.Controls
             //{
                 string title = string.Empty;
                 string descrip = string.Empty;
+
                 var theSelectedObjects = this.GetValue(SelectedObjectsProperty) as object[];
+
+                if (theSelectedObjects == null || theSelectedObjects.Length == 0)
+                    theSelectedObjects = new object[] { this.GetValue(SelectedObjectProperty) as object };
 
                 if (theSelectedObjects != null && theSelectedObjects.Length > 0)
                 {
@@ -417,6 +421,15 @@ namespace Ab.Wpf.Controls
                         if (attrs != null && attrs.Length > 0)
                             descrip = (attrs[0] as DescriptionAttribute).Description;
                     }
+
+                    //PropertyDescriptor prop;
+
+                    //prop = TypeDescriptor.GetProperties(theSelectedObjects[0])["Name"];
+                    //title = (string)prop.GetValue(theSelectedObjects[0]);
+
+                    //prop = TypeDescriptor.GetProperties(theSelectedObjects[0])["Description"];
+                    //descrip = (string)prop.GetValue(theSelectedObjects[0]);
+
                     ChangeHelpText(title, descrip);
                 }
             //}
