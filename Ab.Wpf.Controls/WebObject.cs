@@ -17,16 +17,16 @@ namespace Ab.Wpf.Controls
         #region Fields
         public override ObjectTypes Type
         {
-            get { return _type; }
+            get
+            {
+                return _type;
+            }
             set
             {
                 if (((int)value >= 100) && ((int)value < 200))
                 {
-                    ObjectTypes oldValue;
-
-                    oldValue = _type;
                     _type = value;
-                    base.NotifyPropertyChanged<ObjectTypes>("Type", oldValue, _type);
+                    base.NotifyPropertyChanged("Type");
                 }
                 else
                     throw new ArgumentOutOfRangeException("the given value is not allowed for this class.");
