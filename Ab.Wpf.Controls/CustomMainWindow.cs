@@ -42,6 +42,27 @@ namespace Ab.Wpf.Controls
         private static extern IntPtr SendMessage(IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
 
         #region Handling Event
+        private static void OnIsEditedChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+            CustomMainWindow window = source as CustomMainWindow;
+
+            if (e.NewValue != e.OldValue)
+            {
+                TextBlock editedMark = window.GetTemplateChild("editedMark") as TextBlock;
+                if (editedMark != null)
+                {
+                    if (e.NewValue.Equals(true))
+                    {
+                        editedMark.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        editedMark.Visibility = Visibility.Hidden;
+                    }
+                }
+            }
+        }
+
         protected void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (Mouse.LeftButton != MouseButtonState.Pressed)
@@ -73,9 +94,9 @@ namespace Ab.Wpf.Controls
             if (closeButton != null)
                 closeButton.Click += CloseClick;
 
-            Rectangle moveRectangle = GetTemplateChild("moveRectangle") as Rectangle;
-            if (moveRectangle != null)
-                moveRectangle.PreviewMouseDown += moveRectangle_PreviewMouseDown;
+            Grid moveGrid = GetTemplateChild("moveGrid") as Grid;
+            if (moveGrid != null)
+                moveGrid.PreviewMouseDown += moveGrid_PreviewMouseDown;
 
             Grid resizeGrid = GetTemplateChild("resizeGrid") as Grid;
             if (resizeGrid != null)
@@ -90,6 +111,16 @@ namespace Ab.Wpf.Controls
                     }
                 }
             }
+
+            //TextBlock windowTitle = GetTemplateChild("windowTitle") as TextBlock;
+            //if (windowTitle != null)
+            //{
+            //    string title = this.Title;
+            //    if (!String.IsNullOrEmpty(title))
+            //    {
+            //        windowTitle.Text = title;
+            //    }
+            //}
             
             base.OnApplyTemplate();
         }
@@ -109,7 +140,7 @@ namespace Ab.Wpf.Controls
             Close();
         }
 
-        private void moveRectangle_PreviewMouseDown(object sender, MouseButtonEventArgs e)
+        private void moveGrid_PreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
                 DragMove();
@@ -193,8 +224,20 @@ namespace Ab.Wpf.Controls
         #endregion
         #endregion
 
-        #region Fields
 
+        #region Dependency properties registration
+        public static readonly DependencyProperty IsEditedProperty =
+            DependencyProperty.Register("IsEdited", typeof(bool), typeof(CustomMainWindow),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnIsEditedChanged));
+        #endregion
+
+        #region Fields
+        /// <summary>Shows the description area on the top of the control</summary>
+        public bool IsEdited
+        {
+            get { return (bool)GetValue(IsEditedProperty); }
+            set { SetValue(IsEditedProperty, value); }
+        }
         #endregion
 
         #region Inner Classes

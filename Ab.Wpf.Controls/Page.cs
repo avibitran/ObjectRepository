@@ -22,7 +22,12 @@ namespace Ab.Wpf.Controls
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            set
+            {
+                string oldValue = _name;
+                _name = value;
+                OnPropertyChanged("Name", value, oldValue);
+            }
         }
 
         [Category("Misc")]
@@ -31,7 +36,18 @@ namespace Ab.Wpf.Controls
         public string Url
         {
             get { return _uri.ToString(); }
-            set { _uri = new Uri(value, UriKind.Relative); }
+            set
+            {
+                string oldValue;
+
+                if (_uri == null)
+                    oldValue = "";
+                else
+                    oldValue = _uri.ToString();
+
+                _uri = new Uri(value, UriKind.Relative);
+                OnPropertyChanged("Url", value, oldValue);
+            }
         }
 
         public ObjectTypes Type
@@ -51,12 +67,11 @@ namespace Ab.Wpf.Controls
         #region INotifyPropertyChanged Members
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected void NotifyPropertyChanged(String info)
+        protected void OnPropertyChanged<T>(string propertyName, T oldValue, T newValue)
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(info));
-            }
+            var handler = this.PropertyChanged;
+            if (handler != null)
+                handler(this, new PropertyChangedEventArgs<T>(propertyName, oldValue, newValue));
         }
         #endregion
     }

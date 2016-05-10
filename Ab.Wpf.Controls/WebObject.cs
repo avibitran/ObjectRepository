@@ -25,8 +25,9 @@ namespace Ab.Wpf.Controls
             {
                 if (((int)value >= 100) && ((int)value < 200))
                 {
+                    ObjectTypes oldValue = _type;
                     _type = value;
-                    base.NotifyPropertyChanged("Type");
+                    base.OnPropertyChanged("Type", value, oldValue);
                 }
                 else
                     throw new ArgumentOutOfRangeException("the given value is not allowed for this class.");
