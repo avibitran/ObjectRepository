@@ -125,7 +125,7 @@ namespace ObjectRepository
 
         private void grdProperties_SelectedObjectPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            base.Edited = true;
+            this.IsEdited = true;
         }
 
         #endregion

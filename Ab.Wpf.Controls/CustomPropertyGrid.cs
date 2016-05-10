@@ -83,15 +83,6 @@ namespace Ab.Wpf.Controls
         }
         #endregion
 
-        //public static event PropertyGridChangedEventHandler PropertyChanged;
-        //private static void CustomPropertyGrid_PropertyChanged(Object sender, string propertyName, PropertyGridChangeAction action)
-        //{
-        //    if (PropertyChanged != null)
-        //    {
-        //        PropertyChanged(this, new PropertyGridChangedEventArgs() { Element = sender, PropertyName = propertyName, Action = action });
-        //    }
-        //}
-
         #region Dependency properties registration
         public static readonly DependencyProperty SelectedObjectProperty =
             DependencyProperty.Register("SelectedObject", typeof(object), typeof(CustomPropertyGrid),
@@ -104,12 +95,15 @@ namespace Ab.Wpf.Controls
         public static readonly DependencyProperty HelpVisibleProperty =
             DependencyProperty.Register("HelpVisible", typeof(bool), typeof(CustomPropertyGrid),
             new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, HelpVisiblePropertyChanged));
+
         public static readonly DependencyProperty ToolbarVisibleProperty =
             DependencyProperty.Register("ToolbarVisible", typeof(bool), typeof(CustomPropertyGrid),
             new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, ToolbarVisiblePropertyChanged));
+
         public static readonly DependencyProperty PropertySortProperty =
             DependencyProperty.Register("PropertySort", typeof(PropertySort), typeof(CustomPropertyGrid),
             new FrameworkPropertyMetadata(PropertySort.CategorizedAlphabetical, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, PropertySortPropertyChanged));
+
         public static readonly RoutedEvent SelectedObjectPropertyChangedEvent = EventManager.RegisterRoutedEvent(
             "SelectedObjectPropertyChanged", RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CustomPropertyGrid));
         #endregion
@@ -158,36 +152,6 @@ namespace Ab.Wpf.Controls
 
                 pg.OnSelectionChangedMethod.Invoke(pg.Designer.PropertyInspectorView, new object[] { selection });
                 pg.SelectionTypeLabel.Text = String.Format("{0} ({1})", (e.NewValue as IWebObject).Name, (e.NewValue as IWebObject).TypeAsString);
-
-                //ReleaseObjectsEvents();
-
-                //ObjectTypes type = (e.NewValue as IWebObject).Type;
-                //switch(type)
-                //{
-                //    case ObjectTypes.Browser:
-                //        _selectedObjects = new object[] { e.NewValue };
-                //        //(_selectedObjects[0] as Browser).PropertyChanged += SelectedObject_PropertyChanged;
-                //        break;
-
-                //    case ObjectTypes.Page:
-                //        _selectedObjects = new object[] { e.NewValue };
-                //        //(_selectedObjects[0] as Page).PropertyChanged += SelectedObject_PropertyChanged;
-                //        break;
-
-                //    default:
-                //        _selectedObjects = new object[] { e.NewValue };
-                //        if (((int)type >= 100) && ((int)type < 200))
-                //        {
-                //            (_selectedObjects[0] as WebObject).PropertyChanged += SelectedObject_PropertyChanged;
-                //        }
-                //        else if (((int)type >= 200) && ((int)type < 300))
-                //        {
-                //            (_selectedObjects[0] as WebObjectCollection).PropertyChanged += SelectedObject_PropertyChanged;
-                //        }
-                //        else
-                //            throw new ArgumentException("the selected element cannot be bind.");
-                //        break;
-                //}
             }
 
             pg.ChangeHelpText(string.Empty, string.Empty);
@@ -257,11 +221,6 @@ namespace Ab.Wpf.Controls
                 }
             }        
         }
-
-        //private static void SelectedObject_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        //{
-        //    //CustomPropertyGrid_PropertyChanged(sender, e.PropertyName, PropertyGridChangeAction.Replace);
-        //}
 
         private static void ToolbarVisiblePropertyChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
         {
@@ -426,14 +385,6 @@ namespace Ab.Wpf.Controls
                                 descrip = (attrs[0] as DescriptionAttribute).Description;
                         }
 
-                        //PropertyDescriptor prop;
-
-                        //prop = TypeDescriptor.GetProperties(theSelectedObjects[0])["Name"];
-                        //title = (string)prop.GetValue(theSelectedObjects[0]);
-
-                        //prop = TypeDescriptor.GetProperties(theSelectedObjects[0])["Description"];
-                        //descrip = (string)prop.GetValue(theSelectedObjects[0]);
-
                         ChangeHelpText(title, descrip);
                     }
                 }
@@ -449,16 +400,5 @@ namespace Ab.Wpf.Controls
             (dock.Children[0] as TextBlock).Text = title;
             (dock.Children[1] as TextBlock).Text = descrip;
         }
-
-        //private static void ReleaseObjectsEvents()
-        //{
-        //    if(_selectedObjects != null)
-        //    {
-        //        foreach (object selectedObject in _selectedObjects)
-        //        {
-        //            (selectedObject as IWebObject).PropertyChanged -= SelectedObject_PropertyChanged;
-        //        }
-        //    }
-        //}
     }
 }

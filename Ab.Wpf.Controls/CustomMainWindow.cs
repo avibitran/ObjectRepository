@@ -42,6 +42,27 @@ namespace Ab.Wpf.Controls
         private static extern IntPtr SendMessage(IntPtr hWnd, UInt32 msg, IntPtr wParam, IntPtr lParam);
 
         #region Handling Event
+        private static void OnIsEditedChanged(DependencyObject source, DependencyPropertyChangedEventArgs e)
+        {
+            CustomMainWindow window = source as CustomMainWindow;
+
+            if (e.NewValue != e.OldValue)
+            {
+                TextBlock editedMark = window.GetTemplateChild("editedMark") as TextBlock;
+                if (editedMark != null)
+                {
+                    if (e.NewValue.Equals(true))
+                    {
+                        editedMark.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        editedMark.Visibility = Visibility.Hidden;
+                    }
+                }
+            }
+        }
+
         protected void OnPreviewMouseMove(object sender, MouseEventArgs e)
         {
             if (Mouse.LeftButton != MouseButtonState.Pressed)
@@ -203,27 +224,19 @@ namespace Ab.Wpf.Controls
         #endregion
         #endregion
 
+
+        #region Dependency properties registration
+        public static readonly DependencyProperty IsEditedProperty =
+            DependencyProperty.Register("IsEdited", typeof(bool), typeof(CustomMainWindow),
+            new FrameworkPropertyMetadata(false, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, OnIsEditedChanged));
+        #endregion
+
         #region Fields
-        public bool Edited
+        /// <summary>Shows the description area on the top of the control</summary>
+        public bool IsEdited
         {
-            get
-            {
-                TextBlock editedMark = GetTemplateChild("editedMark") as TextBlock;
-                if (editedMark != null)
-                {
-                    return (editedMark.Visibility.Equals(Visibility.Visible));
-                }
-                else
-                    return false;
-            }
-            set
-            {
-                TextBlock editedMark = GetTemplateChild("editedMark") as TextBlock;
-                if (editedMark != null)
-                {
-                    editedMark.Visibility = Visibility.Visible;
-                }
-            }
+            get { return (bool)GetValue(IsEditedProperty); }
+            set { SetValue(IsEditedProperty, value); }
         }
         #endregion
 
