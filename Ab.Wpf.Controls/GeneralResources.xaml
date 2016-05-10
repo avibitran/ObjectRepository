@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <BitmapImage x:Key="deleteIcon" UriSource="Images/delete.png"/>
+    <BitmapImage x:Key="infoIcon" UriSource="Images/info.png"/>
+    <BitmapImage x:Key="lockIcon" UriSource="Images/lock.png"/>
+    <BitmapImage x:Key="openIcon" UriSource="Images/open.png"/>
+    <BitmapImage x:Key="revertIcon" UriSource="Images/revert.png"/>
+    <BitmapImage x:Key="saveIcon" UriSource="Images/save.png"/>
+    <BitmapImage x:Key="searchIcon" UriSource="Images/search.png"/>
+    <BitmapImage x:Key="unlockIcon" UriSource="Images/unlock.png"/>
+</ResourceDictionary>

@@ -4,44 +4,73 @@
         xmlns:control="clr-namespace:Ab.Wpf.Controls;assembly=Ab.Wpf.Controls"
         Title="ObjectRepository" Height="350" Width="525">
     <control:CustomMainWindow.Resources>
-        <HierarchicalDataTemplate x:Key="NodeTemplate">
-            <TextBlock x:Name="text" Text="{Binding @name}">
-                <TextBlock.ContextMenu>
-                    <ContextMenu x:Name="itemContextMenu">
-                        <MenuItem Header="item01"/>
-                        <MenuItem Header="item02"/>
-                    </ContextMenu>
-                </TextBlock.ContextMenu>
-            </TextBlock>
-            <HierarchicalDataTemplate.ItemsSource>
-                <Binding XPath="child::WebObject | child::Page" />
-            </HierarchicalDataTemplate.ItemsSource>
-            <HierarchicalDataTemplate.Triggers>
-                <DataTrigger Binding="{Binding Path=NodeType}" Value="Element">
-                    <Setter TargetName="text" Property="Text" Value="{Binding XPath=@name | @driver}"></Setter>
-                </DataTrigger>
-            </HierarchicalDataTemplate.Triggers>
-        </HierarchicalDataTemplate>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary>
+                    <HierarchicalDataTemplate x:Key="NodeTemplate">
+                        <TextBlock x:Name="text" Text="{Binding @name}">
+                            <TextBlock.ContextMenu>
+                                <ContextMenu x:Name="itemContextMenu">
+                                    <MenuItem Header="item01"/>
+                                    <MenuItem Header="item02"/>
+                                </ContextMenu>
+                            </TextBlock.ContextMenu>
+                        </TextBlock>
+                        <HierarchicalDataTemplate.ItemsSource>
+                            <Binding XPath="child::WebObject | child::Page" />
+                        </HierarchicalDataTemplate.ItemsSource>
+                        <HierarchicalDataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Path=NodeType}" Value="Element">
+                                <Setter TargetName="text" Property="Text" Value="{Binding XPath=@name | @driver}"></Setter>
+                            </DataTrigger>
+                        </HierarchicalDataTemplate.Triggers>
+                    </HierarchicalDataTemplate>
 
-        <XmlDataProvider x:Key="xmlDataProvider"/>
+                    <XmlDataProvider x:Key="xmlDataProvider"/>
+                </ResourceDictionary>
+                <ResourceDictionary Source="pack://application:,,,/Ab.Wpf.Controls;component/GeneralResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </control:CustomMainWindow.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="259*"/>
-            <ColumnDefinition Width="258*"/>
-        </Grid.ColumnDefinitions>
-        <TreeView Name="trvItems" Grid.Row="0" Grid.ColumnSpan="2" Background="AliceBlue" 
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ToolBarTray x:Name="toolbarPlaceholder" Grid.Row="0" Grid.ColumnSpan="2" Height="35" VerticalAlignment="Center">
+            <ToolBar x:Name="tbrGeneral" Band="1" BandIndex="1" Height="35">
+                <Button x:Name="openItem" ToolTip="Open" BorderThickness="0">
+                    <Image Source="{StaticResource openIcon}" Height="25" Width="25" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Button>
+                <Button x:Name="lockStateItem" ToolTip="Unlock">
+                    <Image Source="{StaticResource unlockIcon}" Height="25" Width="25" VerticalAlignment="Center" HorizontalAlignment="Center" UseLayoutRounding="True" StretchDirection="DownOnly" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="searchItem" ToolTip="Search">
+                    <Image Source="{StaticResource searchIcon}" Height="25" Width="25" VerticalAlignment="Center" HorizontalAlignment="Center" UseLayoutRounding="True" StretchDirection="DownOnly" Stretch="Fill"/>
+                </Button>
+                <Button x:Name="infoItem" ToolTip="Info">
+                    <Image Source="{StaticResource infoIcon}" Height="25" Width="25" VerticalAlignment="Center" HorizontalAlignment="Center" UseLayoutRounding="True" StretchDirection="DownOnly" Stretch="Fill"/>
+                </Button>
+            </ToolBar>
+        </ToolBarTray>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="259*"/>
+                <ColumnDefinition Width="258*"/>
+            </Grid.ColumnDefinitions>
+            <TreeView Name="trvItems" Grid.Row="0" Grid.ColumnSpan="2" Background="AliceBlue" 
             ItemsSource="{Binding Source={StaticResource ResourceKey=xmlDataProvider}, XPath=*}"
             ItemTemplate="{StaticResource NodeTemplate}" SelectedItemChanged="trvItems_SelectedItemChanged">
-        </TreeView>
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="50*"/>
-            </Grid.RowDefinitions>
-            <control:CustomPropertyGrid Grid.Row="0" x:Name="grdProperties"
+            </TreeView>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="50*"/>
+                </Grid.RowDefinitions>
+                <control:CustomPropertyGrid Grid.Row="0" x:Name="grdProperties"
                  HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
                  HelpVisible="True" ToolbarVisible="True" PropertySort="Alphabetical"
-                 /> 
+                 />
+            </Grid>
         </Grid>
     </Grid>
 </control:CustomMainWindow>

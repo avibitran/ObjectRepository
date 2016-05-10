@@ -60,7 +60,8 @@
                             <Rectangle Stroke="{x:Null}" Fill="WhiteSmoke" HorizontalAlignment="Left" Width="6" VerticalAlignment="Top" Height="5" x:Name="topLeft" />
                             <Grid>
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="25"/>
+                                    <!--<RowDefinition Height="24" />-->
                                     <RowDefinition />
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
@@ -72,10 +73,10 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="*"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock x:Name="editedMark" Grid.Column="0" Text="*" Foreground="DarkRed" Visibility="Hidden" Padding="5,0,2,0"/>
-                                    <TextBlock x:Name="windowTitle" Grid.Column="1" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:CustomMainWindow}}}"/>
+                                    <TextBlock x:Name="editedMark" Grid.Column="0" Text="*" Foreground="DarkRed" Visibility="Hidden" Padding="5,0,2,0" VerticalAlignment="Center"/>
+                                    <TextBlock x:Name="windowTitle" Grid.Column="1" VerticalAlignment="Center" Text="{Binding Title, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:CustomMainWindow}}}"/>
                                 </Grid>
-                            <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Background="WhiteSmoke">
+                                <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Background="WhiteSmoke">
                                     <Button x:Name="minimizeButton" Style="{StaticResource WindowButtonStyle}"
                                             Content="0" />
                                     <Button x:Name="restoreButton" Style="{StaticResource WindowButtonStyle}"
@@ -83,6 +84,13 @@
                                     <Button x:Name="closeButton" Style="{StaticResource WindowButtonStyle}"
                                             Content="r" />
                                 </StackPanel>
+                                <!--<ToolBarTray x:Name="toolbarPlaceholder" Grid.Row="1" Grid.ColumnSpan="2">
+                                    <ToolBar x:Name="tbrGeneral" Band="1" BandIndex="1">
+                                        <Button x:Name="deleteItem">
+                                            <Image Source=""
+                                        </Button>
+                                    </ToolBar>
+                                </ToolBarTray>-->
                                 <Grid Background="{TemplateBinding Background}"
                                            Grid.Row="1" Grid.ColumnSpan="2" Margin="5,1,5,5">
                                     <AdornerDecorator>
